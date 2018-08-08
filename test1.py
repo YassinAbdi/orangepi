@@ -1,31 +1,53 @@
-""" How Does a single man change an entire country"""
-#side note stop laughing when you see anyone it werid
-import OPi.GPIO as GPIO
-import time
-class Motor_Control(object):
-    """docstring for Motor_Control."""
-    def __init__(self):
-        GPIO.setmode(GPIO.BOARD)
-        #GPIO.setup(12,GPIO.OUT)
-        self.LeftPin = 1
-        self.RightPin = 0
-    def Forward(self):
-        GPIO.setup(self.LeftPin, GPIO.OUT)
-        GPIO.setup(self.RightPin, GPIO.OUT)
+#!/usr/bin/env python
+"""Basic blinking led example.
 
-    def Left(self):
-        GPIO.setup(self.LeftPin, GPIO.OUT)
+"""
 
-    def Right(self):
-        GPIO.setup(self.RightPin, GPIO.OUT)
+import os
+import sys
+
+if not os.getegid() == 0:
+sys.exit('Script must be run as root')
 
 
-    def Clean(self):
-        GPIO.cleanup()
+from time import sleep
+from pyA20.gpio import gpio
+from pyA20.gpio import port
 
-if __name__ == '__main__':
-    m = Motor_Control()
-    x = 0
-    while x < 10:
-        m.Forward()
-        x = x + 1
+__author__ = "Stefan Mavrodiev"
+__copyright__ = "Copyright 2014, Olimex LTD"
+__credits__ = ["Stefan Mavrodiev"]
+__license__ = "GPL"
+__version__ = "2.0"
+__maintainer__ = __author__
+__email__ = "support@olimex.com"
+
+led = port.PA00
+led1 = port.PA01
+led2 = port.PA6
+
+gpio.init()
+gpio.setcfg(led, gpio.OUTPUT)
+gpio.setcfg(led1, gpio.OUTPUT)
+gpio.setcfg(led2, gpio.OUTPUT)
+
+try:
+    print ("Press CTRL+C to exit")
+    while True:
+        gpio.output(led, 1)
+        sleep(0.1)
+        gpio.output(led, 0)
+        sleep(0.6)
+
+        gpio.output(led1, 1)
+        sleep(0.1)
+        gpio.output(led1, 0)
+        sleep(0.6)
+
+        gpio.output(led2, 1)
+        sleep(0.1)
+        gpio.output(led2, 0)
+        sleep(0.6)
+
+except KeyboardInterrupt:
+    print ("Goodbye.")
